@@ -116,19 +116,14 @@ void LoRa::write_reg_buffer(uint8_t reg, uint8_t *buffer, uint8_t size)
 uint8_t LoRa::read_reg(uint8_t reg)
 {
     esp_err_t ret;
-    ESP_LOGI(TAG, "Reading register 0x%02x", reg);
     uint8_t out[2] = { reg, 0xff };
     uint8_t in[2];
-    ESP_LOGI(TAG, "out = 0x%02x, 0x%02x", out[0], out[1]);
     
     spi_transaction_t t = {};
     t.flags = 0;
     t.length = 8 * sizeof(out);
-    ESP_LOGI(TAG, "t.length = %d", t.length);
     t.tx_buffer = out;
-    ESP_LOGI(TAG, "t.tx_buffer = 0x%02x, 0x%02x", ((uint8_t*)t.tx_buffer)[0], ((uint8_t*)t.tx_buffer)[1]);
     t.rx_buffer = in;
-    ESP_LOGI(TAG, "t.rx_buffer = 0x%02x, 0x%02x", ((uint8_t*)t.rx_buffer)[0], ((uint8_t*)t.rx_buffer)[1]);
 
     //gpio_set_level(_cs, 0);  // Control CS manually
 
@@ -138,7 +133,6 @@ uint8_t LoRa::read_reg(uint8_t reg)
     }
 
     //gpio_set_level(_cs, 1);  // Release CS manually
-    ESP_LOGI(TAG, "Read value: 0x%02x", in[1]);
     return in[1];
 }
 
